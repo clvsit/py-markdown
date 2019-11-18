@@ -27,7 +27,7 @@ md.write("Markdown.md", is_cover=False)
 
 ```json
 [
-    {"type": "h1", "content": "Markdown 接口文档"}，
+    {"type": "h1", "content": "Markdown 接口文档"},
     {"type": "content", "content": "一个简单的 markdown 文档生成工具包。"
 ]
 ```
