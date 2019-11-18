@@ -27,8 +27,8 @@ md.write("Markdown.md", is_cover=False)
 
 ```json
 [
-    {"type": "h1", "content": "Markdown 接口文档"}，
-    {"type": "content", "content": "一个简单的 markdown 文档生成工具包。"
+    {"type": "h1", "content": "Markdown 接口文档"},
+    {"type": "content", "content": "一个简单的 markdown 文档生成工具包。"}
 ]
 ```
 - 编写脚本文件。
@@ -65,11 +65,9 @@ md_config = {
 md = Markdown(md_config)
 ```
 
-
-
 ## API 说明
 
-### add_h*(title)
+## add_h*(title)
 通过指定 \* 号不同的数字，可以添加 markdown 对应等级标题，例如 add\_h1(title) 添加一级标题，add\_h2(title) 添加二级标题。
 
 \* 号可以取 1、2、3、4、5 这 5 个整数。
@@ -104,7 +102,7 @@ md.add_h3("set_h*(title)")
 md.add_h4("使用示例")
 ```
 
-### add_h(title, level)
+## add_h(title, level)
 添加 markdown 的各级标题，是 set\_h*() 方法的整合写法。
 
 #### 函数说明
@@ -133,7 +131,7 @@ md = Markdown()
 md.add_h("Markdown 接口文档", level="h1")
 ```
 
-### add_content()
+## add_content()
 添加正文内容。
 
 #### 函数说明
@@ -161,35 +159,7 @@ md.add_h("set_content()", level="h3")
 md.add_content("添加正文内容。")
 ```
 
-### add_content()
-添加正文内容。
-
-#### 函数说明
-```python
-add_content(content, is_wrap=True)
-```
-
-#### 参数列表
-
-参数名 | 中文名 | 数据类型 | 是否必选 | 描述
----|---|---|:---:|---
-content | 正文内容 | str | 是 | 需要添加的文本内容
-is_wrap | 是否换行 | bool | 否 | 默认为 True，即在当前文本的末尾加上 "\n"
-
-#### 返回内容
-Markdown 对象。
-
-#### 报错内容
-- TypeError：当传入的 content 参数不为字符串类型时，引发该错误。
-
-#### 使用示例
-```python
-md = Markdown()
-md.add_h("set_content()", level="h3")
-md.add_content("添加正文内容。")
-```
-
-### add_list()
+## add_list()
 添加列表，Markdown 的列表共有两种类型：有序列表以及无序列表。
 
 #### 函数说明
@@ -258,7 +228,7 @@ md.add_list({
 ```
 
 
-### add_image()
+## add_image()
 添加图片内容。
 
 #### 函数说明
@@ -286,7 +256,7 @@ md.add_image()
 ```
 
 
-### add_link()
+## add_link()
 添加网页链接。
 
 #### 函数说明
@@ -314,7 +284,7 @@ md.add_image()
 ```
 
 
-### add_code()
+## add_code()
 添加代码区域。
 
 #### 函数说明
@@ -344,7 +314,7 @@ md.add_image()
 ```
 
 
-### add_table()
+## add_table()
 添加代码区域。
 
 #### 函数说明
@@ -412,7 +382,7 @@ md = Markdown()
 md.add_image()
 ```
 
-### add_wrap()
+## add_wrap()
 添加换行符。
 
 #### 函数说明
@@ -433,7 +403,7 @@ md.write("Markdown 接口文档.md", is_cover=False)
 ```
 
 
-### write()
+## write()
 生成 markdown 文件。
 
 #### 函数说明
