@@ -9,6 +9,14 @@
 - 表格
 - 代码块
 
+## 更新日志
+
+日期 | 内容
+---|---
+2019/12/07 | 新增 task、数学公式、流程图和甘特图的绘制
+
+
+
 ## Quick start
 该工具包支持两种形式创建 markdown 文档。若您是面向对象开发的忠实拥趸，或是对面向对象开发有着深厚经验，推荐使用面向对象的方式来创建 markdown 文档。
 
@@ -27,8 +35,8 @@ md.write("Markdown.md", is_cover=False)
 
 ```json
 [
-    {"type": "h1", "content": "Markdown 接口文档"},
-    {"type": "content", "content": "一个简单的 markdown 文档生成工具包。"}
+    {"type": "h1", "content": "Markdown 接口文档"}，
+    {"type": "content", "content": "一个简单的 markdown 文档生成工具包。"
 ]
 ```
 - 编写脚本文件。
@@ -45,9 +53,9 @@ with open("XXX.json", "r", encoding="utf-8") as file:
 ## 初始化
 【语法】：
 ```python
-Markdown(config=None)
+md = Markdown(config=None)
 ```
-config：可以传入配置文件的路径，也可以直接传入配置项字典。
+config：可以是传入配置文件的路径，也可以直接传入配置项字典。
 
 【示例】：
 ```
@@ -65,9 +73,11 @@ md_config = {
 md = Markdown(md_config)
 ```
 
+
+
 ## API 说明
 
-## add_h*(title)
+### add_h*(title)
 通过指定 \* 号不同的数字，可以添加 markdown 对应等级标题，例如 add\_h1(title) 添加一级标题，add\_h2(title) 添加二级标题。
 
 \* 号可以取 1、2、3、4、5 这 5 个整数。
@@ -100,9 +110,12 @@ md.add_h1("Markdown 接口文档")
 md.add_h2("API 说明")
 md.add_h3("set_h*(title)")
 md.add_h4("使用示例")
+md.write("example.md", is_cover=True)
 ```
 
-## add_h(title, level)
+![example](https://raw.githubusercontent.com/clvsit/markdown-image/master/tools/py-markdown/20191208193448.jpg)
+
+### add_h(title, level)
 添加 markdown 的各级标题，是 set\_h*() 方法的整合写法。
 
 #### 函数说明
@@ -129,9 +142,42 @@ Markdown 对象。
 ```python
 md = Markdown()
 md.add_h("Markdown 接口文档", level="h1")
+md.add_h("API 说明", level="h2")
+md.add_h("set_h*(title)", level="h3")
+md.add_h("使用示例", level="h4")
+md.write("example.md", is_cover=True)
 ```
 
-## add_content()
+### add_content()
+添加正文内容。
+
+#### 函数说明
+```python
+add_content(content, is_wrap=True)
+```
+
+#### 参数列表
+
+参数名 | 中文名 | 数据类型 | 是否必选 | 描述
+---|---|---|:---:|---
+content | 正文内容 | str | 是 | 需要添加的文本内容
+is_wrap | 是否换行 | bool | 否 | 默认为 True，即在当前文本的末尾加上 "\n"
+
+#### 返回内容
+Markdown 对象。
+
+#### 报错内容
+- TypeError：当传入的 content 参数不为字符串类型时，引发该错误。
+
+#### 使用示例
+```python
+md = Markdown()
+md.add_h("set_content()", level="h3")
+md.add_content("添加正文内容。")
+md.write("example.md", is_cover=True)
+```
+
+### add_content()
 添加正文内容。
 
 #### 函数说明
@@ -159,7 +205,8 @@ md.add_h("set_content()", level="h3")
 md.add_content("添加正文内容。")
 ```
 
-## add_list()
+
+### add_list()
 添加列表，Markdown 的列表共有两种类型：有序列表以及无序列表。
 
 #### 函数说明
@@ -228,7 +275,7 @@ md.add_list({
 ```
 
 
-## add_image()
+### add_image()
 添加图片内容。
 
 #### 函数说明
@@ -256,7 +303,7 @@ md.add_image()
 ```
 
 
-## add_link()
+### add_link()
 添加网页链接。
 
 #### 函数说明
@@ -284,7 +331,7 @@ md.add_image()
 ```
 
 
-## add_code()
+### add_code()
 添加代码区域。
 
 #### 函数说明
@@ -314,8 +361,8 @@ md.add_image()
 ```
 
 
-## add_table()
-添加代码区域。
+### add_table()
+添加表格。
 
 #### 函数说明
 ```python
@@ -382,7 +429,7 @@ md = Markdown()
 md.add_image()
 ```
 
-## add_wrap()
+### add_wrap()
 添加换行符。
 
 #### 函数说明
@@ -402,8 +449,232 @@ md.add_h2("API　说明")
 md.write("Markdown 接口文档.md", is_cover=False)
 ```
 
+### add_task
+添加任务列表。
 
-## write()
+#### 函数说明
+```python
+add_task(task_list)
+```
+
+#### 参数列表
+
+参数名 | 中文名 | 数据类型 | 是否必选 | 描述
+---|---|---|:---:|---
+task_list | 任务列表 | list | 是 | 记录所有未完成与已完成的任务
+
+【task_list 示例】：
+```
+[
+    {"is_finished": False, "task_name": "学习"},
+    {"is_finished": True, "task_name": "洗衣"},
+    [
+        {"is_finished": False, "task_name": "逗猫"}
+    ]
+]
+```
+- is\_finished：bool，表明当前任务的完成状态。取值 True，则表示完成；取值 False，则表示未完成。
+- task\_name：str，任务的名称。
+
+task\_list 支持列表嵌套，体现在 Markdown 的实际效果上就是层级递进的任务列表。
+
+#### 返回内容
+Markdown 对象。
+
+#### 报错内容
+- TypeError：当传入的 task\_list 参数不为列表类型时，引发该错误。
+
+#### 使用示例
+```python
+md = Markdown()
+md.add_task([
+    {"is_finished": False, "task_name": "学习"},
+    {"is_finished": True, "task_name": "洗衣"},
+    [{"is_finished": False, "task_name": "逗猫"}]
+])
+md.write("example.md", is_cover=True)
+```
+
+![example](https://raw.githubusercontent.com/clvsit/markdown-image/master/tools/py-markdown/20191208203446.jpg)
+
+
+### add_math()
+添加数学公式。
+
+#### 函数说明
+```python
+add_math(math_content)
+```
+
+#### 参数列表
+
+参数名 | 中文名 | 数据类型 | 是否必选 | 描述
+---|---|---|:---:|---
+math_content | 数学公式表达式 | str | 是 | latex 或 katex 数学公式表达式
+
+#### 返回内容
+Markdown 对象。
+
+#### 报错内容
+- TypeError：当传入的 math\_content 参数不为字符串类型时，引发该错误。
+
+#### 使用示例
+```python
+md = Markdown()
+md.add_math(r"Loss = \frac{1}{n}\sum_{i=1}^n (y_i - f(x_i))^2")
+md.write("example.md", is_cover=True)
+```
+
+![example](https://raw.githubusercontent.com/clvsit/markdown-image/master/tools/py-markdown/20191208202627.jpg)
+
+### add_flowchart
+添加流程图。
+
+#### 函数说明
+```python
+add_flowchart(role_dict, flow_list, direction)
+```
+
+#### 参数列表
+
+参数名 | 中文名 | 数据类型 | 是否必选 | 描述
+---|---|---|:---:|---
+role_dict | 角色字典 | dict | 是 | 流程图中各节点（角色）的信息
+flow_list | 流程列表 | list | 是 | 记录流程图各阶段及阶段之间的跳转过程
+direction | 流程图绘制方向 | str | 否 | 取值可以是 LR(左->右) 或 TD(上->下)，默认为 LR
+
+【role_dict 示例】：
+```
+{
+    "Markdown 对象": "object",
+    "添加流程图": "action",
+    "role_dict 有哪些内容": "condition",
+    "对象": "object",
+    "动作": "action",
+    "条件": "condition"
+}
+```
+- key：表示流程图节点（角色）的名称；
+- value：可取值为 object、action 以及 condition。
+    - object：表明当前节点是一个对象，体现在流程图上是一个矩形；
+    - action：表明当前节点是一个动作，体现在流程图上是一个椭圆形；
+    - condition：表明当前节点是一个条件（分歧），体现在流程图上是一个菱形。
+
+【flow_list 示例】：
+```
+[
+    {"from": "Markdown 对象", "to": "添加流程图"},
+    {"from": "添加流程图", "to": "role_dict 有哪些内容"},
+    {"from": "role_dict 有哪些内容", "to": "对象", "condition": "选择对象"},
+    {"from": "role_dict 有哪些内容", "to": "动作", "condition": "选择动作"},
+    {"from": "role_dict 有哪些内容", "to": "条件", "condition": "选择条件"}
+]
+```
+- from、to：表明箭头的起点与终点，即 from 指向 to。
+- condition：只有 from 节点为 condition 时才会生效，用以说明 from 节点流向 to 节点的条件。
+
+#### 返回内容
+Markdown 对象。
+
+#### 报错内容
+- TypeError：当传入的 role\_dict 参数不为字典类型，或 flow\_list 参数不为列表类型时，引发该错误。
+
+#### 使用示例
+```python
+md = Markdown()
+md.add_flowchart(role_dict={
+    "Markdown 对象": "object",
+    "添加流程图": "action",
+    "role_dict 有哪些内容": "condition",
+    "对象": "object",
+    "动作": "action",
+    "条件": "condition"
+}, flow_list= [
+    {"from": "Markdown 对象", "to": "添加流程图"},
+    {"from": "添加流程图", "to": "role_dict 有哪些内容"},
+    {"from": "role_dict 有哪些内容", "to": "对象", "condition": "选择对象"},
+    {"from": "role_dict 有哪些内容", "to": "动作", "condition": "选择动作"},
+    {"from": "role_dict 有哪些内容", "to": "条件", "condition": "选择条件"}
+])
+md.write("example.md", is_cover=True)
+```
+
+![example_flow_chart](https://raw.githubusercontent.com/clvsit/markdown-image/master/tools/py-markdown/20191208205039.jpg)
+
+
+### add_gantt
+添加甘特图。
+
+#### 函数说明
+```python
+add_gantt(gantt_list, title, date_format)
+```
+
+#### 参数列表
+
+参数名 | 中文名 | 数据类型 | 是否必选 | 描述
+---|---|---|:---:|---
+gantt_list | 甘特图信息列表 | list | 是 | 记录甘特图中要展示的各项内容
+title | 甘特图标题 | str | 否 | 甘特图的标题，默认为空，即不显示标题
+date_format | 日期格式 | str | 否 | 各项任务的日期格式，默认为 YYYY-MM-DD
+
+【gantt_list 示例】：
+```
+[
+    {
+        "section": "插件制作", "task": [
+            {"name": "py-markdown", "date": "19-11-26", "duration": "15d"},
+            {"name": "DataHelper", "date": "19-12-07", "duration": "30d"}
+        ]
+    }, {
+        "section": "工作任务", "task": [
+            {"name": "语法检查", "date": "19-09-29", "duration": "120d"}
+        ]
+    }, {
+        "section": "个人学习", "task": [
+            {"name": "TF2.0", "date": "19-11-15", "duration": "45d"}
+        ]
+    }
+]
+```
+- section：甘特图阶段名称；
+- task：甘特图当前阶段的任务列表；
+- name：任务名称；
+- date：起始日期，格式与 date\_format 保持一直；
+- duration：持续时间，输入格式为 数字 + d，d 表示天数。
+
+#### 返回内容
+Markdown 对象。
+
+#### 报错内容
+- TypeError：当传入的 title 或 date\_format 参数不为字符串类型，或 gantt\_list 参数不为列表类型时，引发该错误。
+
+#### 使用示例
+```python
+md = Markdown()
+md.add_gantt([
+    {
+        "section": "插件制作", "task": [
+            {"name": "py-markdown", "date": "19-11-26", "duration": "15d"},
+            {"name": "DataHelper", "date": "19-12-07", "duration": "30d"}
+        ]
+    }, {
+        "section": "工作任务", "task": [
+            {"name": "语法检查", "date": "19-09-29", "duration": "120d"}
+        ]
+    }, {
+        "section": "个人学习", "task": [
+            {"name": "TF2.0", "date": "19-11-15", "duration": "45d"}
+        ]
+    }
+], "甘特图", "YY-MM-DD")
+md.write("example.md", is_cover=True)
+```
+
+![example_gantt](https://raw.githubusercontent.com/clvsit/markdown-image/master/tools/py-markdown/20191208211104.jpg)
+
+
+### write()
 生成 markdown 文件。
 
 #### 函数说明
